@@ -31,13 +31,13 @@ body {
     position: relative;
     width: 300px;
     height: 400px;
-    background-image: url('../public/assets/face.png');
+    background-image: url('./public/assets/face.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     margin: 20px auto;
     overflow: hidden;
-    cursor: url('public/assets/cursor.png') 16 16, pointer;
+    cursor: url('./public/assets/cursor.png') 16 16, pointer;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -45,7 +45,7 @@ body {
     position: absolute;
     width: 30px;
     height: 30px;
-    background-image: url('../public/assets/pimple.png');
+    background-image: url('./public/assets/pimple.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
