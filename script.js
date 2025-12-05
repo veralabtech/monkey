@@ -5,6 +5,47 @@ const INITIAL_SPAWN_RATE = 1000; // Spawn iniziale: 1 brufolo ogni 1000ms
 const MIN_SPAWN_RATE = 400;      // Spawn minimo: 1 brufolo ogni 400ms
 const DIFFICULTY_INCREASE_INTERVAL = 5; // Aumenta difficoltà ogni 5 secondi
 
+// ========================================
+// EXCLUSION ZONES - Aree dove i brufoli NON possono apparire
+// ========================================
+// ISTRUZIONI PER REGOLARE LE COORDINATE:
+// - Ogni zona è definita da: left, top, width, height
+// - Tutti i valori sono PERCENTUALI (0-100) della dimensione del contenitore
+// - left: distanza dal bordo sinistro (0 = estrema sinistra, 100 = estrema destra)
+// - top: distanza dal bordo superiore (0 = in alto, 100 = in basso)
+// - width: larghezza della zona (in percentuale della larghezza totale)
+// - height: altezza della zona (in percentuale dell'altezza totale)
+//
+// Per regolare, osserva dove appaiono i brufoli e modifica questi valori:
+// - Aumenta left per spostare la zona verso destra
+// - Aumenta top per spostare la zona verso il basso
+// - Aumenta width/height per ingrandire la zona
+// ========================================
+
+const EXCLUSION_ZONES = [
+    // Occhio sinistro
+    {
+        left: 15,    // Regola questo valore per spostare orizzontalmente
+        top: 25,     // Regola questo valore per spostare verticalmente
+        width: 27,   // Regola questo valore per la larghezza
+        height: 18   // Regola questo valore per l'altezza
+    },
+    // Occhio destro
+    {
+        left: 55,    // Regola questo valore per spostare orizzontalmente
+        top: 25,     // Regola questo valore per spostare verticalmente
+        width: 28,   // Regola questo valore per la larghezza
+        height: 18   // Regola questo valore per l'altezza
+    },
+    // Bocca
+    {
+        left: 35,    // Regola questo valore per spostare orizzontalmente
+        top: 65,     // Regola questo valore per spostare verticalmente
+        width: 30,   // Regola questo valore per la larghezza
+        height: 15   // Regola questo valore per l'altezza
+    }
+];
+
 // Riferimenti agli Elementi DOM
 const scoreDisplay = document.getElementById('score');
 const pimplesCountDisplay = document.getElementById('pimples-count');
@@ -36,6 +77,38 @@ function getRandomInt(min, max) {
 }
 
 /**
+ * Verifica se una posizione si trova in una zona di esclusione.
+ * @param {number} x - Coordinata X in pixel.
+ * @param {number} y - Coordinata Y in pixel.
+ * @param {number} containerWidth - Larghezza del contenitore in pixel.
+ * @param {number} containerHeight - Altezza del contenitore in pixel.
+ * @param {number} moleSize - Dimensione del brufolo in pixel.
+ * @returns {boolean} True se la posizione è in una zona vietata.
+ */
+function isInExclusionZone(x, y, containerWidth, containerHeight, moleSize) {
+    // Converti le coordinate del brufolo in percentuali
+    const moleLeftPercent = (x / containerWidth) * 100;
+    const moleTopPercent = (y / containerHeight) * 100;
+    const moleSizeWidthPercent = (moleSize / containerWidth) * 100;
+    const moleSizeHeightPercent = (moleSize / containerHeight) * 100;
+
+    // Controlla se il brufolo si sovrappone a qualsiasi zona di esclusione
+    for (const zone of EXCLUSION_ZONES) {
+        // Verifica sovrapposizione rettangolare
+        const overlapX = moleLeftPercent < (zone.left + zone.width) &&
+            (moleLeftPercent + moleSizeWidthPercent) > zone.left;
+        const overlapY = moleTopPercent < (zone.top + zone.height) &&
+            (moleTopPercent + moleSizeHeightPercent) > zone.top;
+
+        if (overlapX && overlapY) {
+            return true; // Sovrapposizione trovata
+        }
+    }
+
+    return false; // Nessuna sovrapposizione
+}
+
+/**
  * Crea e posiziona casualmente un brufolo sulla faccia.
  */
 function createMole() {
@@ -55,9 +128,22 @@ function createMole() {
     const availableWidth = gameBoard.offsetWidth - marginLeft - marginRight - moleSize;
     const availableHeight = gameBoard.offsetHeight - marginTop - marginBottom - moleSize;
 
-    // Assegna una posizione casuale all'interno della faccia ovale
-    const x = getRandomInt(marginLeft, marginLeft + availableWidth);
-    const y = getRandomInt(marginTop, marginTop + availableHeight);
+    // Trova una posizione valida che non sia in una zona di esclusione
+    let x, y;
+    let attempts = 0;
+    const maxAttempts = 50; // Previeni loop infinito
+
+    do {
+        // Genera posizione casuale
+        x = getRandomInt(marginLeft, marginLeft + availableWidth);
+        y = getRandomInt(marginTop, marginTop + availableHeight);
+        attempts++;
+
+        // Esci se trovata posizione valida o raggiunti i tentativi massimi
+        if (!isInExclusionZone(x, y, gameBoard.offsetWidth, gameBoard.offsetHeight, moleSize)) {
+            break;
+        }
+    } while (attempts < maxAttempts);
 
     mole.style.left = `${x}px`;
     mole.style.top = `${y}px`;
