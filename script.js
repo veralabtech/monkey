@@ -1,6 +1,9 @@
 // Costanti di Gioco
 const GAME_DURATION = 30;
 const POINTS_PER_MOLE = 25;
+const INITIAL_SPAWN_RATE = 1000; // Spawn iniziale: 1 brufolo ogni 1000ms
+const MIN_SPAWN_RATE = 400;      // Spawn minimo: 1 brufolo ogni 400ms
+const DIFFICULTY_INCREASE_INTERVAL = 5; // Aumenta difficoltà ogni 5 secondi
 
 // Riferimenti agli Elementi DOM
 const scoreDisplay = document.getElementById('score');
@@ -18,6 +21,7 @@ let pimplesSquashed = 0;
 let timeRemaining = GAME_DURATION;
 let gameInterval; // Per il timer principale
 let moleInterval; // Per l'apparizione dei brufoli
+let currentSpawnRate = INITIAL_SPAWN_RATE; // Velocità di spawn corrente
 
 /**
  * Funzione per generare un numero casuale all'interno di un intervallo.
@@ -131,13 +135,28 @@ function startGame() {
     gameOverMessage.classList.add('hidden');
     startButton.classList.add('hidden');
 
-    // 3. Avvia il timer per la creazione dei brufoli (ogni 700ms)
-    moleInterval = setInterval(createMole, 700);
+    // 3. Resetta la velocità di spawn
+    currentSpawnRate = INITIAL_SPAWN_RATE;
 
-    // 4. Avvia il timer principale del gioco
+    // 4. Funzione per aggiornare la velocità di spawn
+    function updateSpawnRate() {
+        clearInterval(moleInterval);
+        moleInterval = setInterval(createMole, currentSpawnRate);
+    }
+
+    // 5. Avvia il timer iniziale per la creazione dei brufoli
+    moleInterval = setInterval(createMole, currentSpawnRate);
+
+    // 6. Avvia il timer principale del gioco
     gameInterval = setInterval(() => {
         timeRemaining--;
         timerDisplay.textContent = timeRemaining;
+
+        // Aumenta la difficoltà ogni 5 secondi
+        if (timeRemaining % DIFFICULTY_INCREASE_INTERVAL === 0 && currentSpawnRate > MIN_SPAWN_RATE) {
+            currentSpawnRate = Math.max(MIN_SPAWN_RATE, currentSpawnRate - 50);
+            updateSpawnRate();
+        }
 
         if (timeRemaining <= 0) {
             endGame();
