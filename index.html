@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schiaccia il Brufolo! 🎯</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>Schiaccia il Brufolo!</h1>
+        <div class="scoreboard">
+            <p>Punti: <span id="score">0</span></p>
+            <p>Brufoli Schiacciati: <span id="pimples-count">0</span></p>
+            <p>Tempo Rimanente: <span id="timer">30</span>s</p>
+        </div>
+
+        <div id="game-board" class="face">
+        </div>
+
+        <button id="start-button">INIZIA IL GIOCO</button>
+        <div id="game-over-message" class="hidden">
+            <h2>Tempo Scaduto!</h2>
+            <p>Il tuo punteggio finale è: <span id="final-score">0</span></p>
+            <button id="restart-button">GIOCA ANCORA</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
