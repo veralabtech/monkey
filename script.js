@@ -62,8 +62,14 @@ function createMole() {
     mole.style.left = `${x}px`;
     mole.style.top = `${y}px`;
 
-    // Aggiungi l'evento click
+    // Aggiungi l'evento click per desktop
     mole.addEventListener('click', whackMole);
+
+    // Aggiungi l'evento touch per mobile (previene il double-firing)
+    mole.addEventListener('touchstart', (event) => {
+        event.preventDefault(); // Previene il click successivo
+        whackMole(event);
+    }, { passive: false });
 
     // Aggiungi alla plancia di gioco
     gameBoard.appendChild(mole);

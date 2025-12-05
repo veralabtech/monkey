@@ -50,6 +50,10 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     transition: transform 0.1s;
+    touch-action: manipulation;
+    /* Aumenta l'area cliccabile con padding invisibile */
+    padding: 5px;
+    margin: -5px;
 }
 
 .mole:hover {
