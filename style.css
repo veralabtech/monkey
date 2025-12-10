@@ -5,15 +5,8 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
-}
-
-.game-container {
+    background-color: #FFF5FC;
     text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .scoreboard {
@@ -29,9 +22,9 @@ body {
 /* Stile della Faccia (Campo da Gioco) */
 .face {
     position: relative;
-    width: 300px;
-    height: 400px;
-    background-image: url('./public/assets/face.png');
+    width: 350px;
+    height: 450px;
+    background-image: url('./public/assets/face2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -39,6 +32,8 @@ body {
     overflow: hidden;
     cursor: url('./public/assets/cursor.png') 16 16, pointer;
     -webkit-tap-highlight-color: transparent;
+    border-radius: 50%;
+    /* Crea un bordo ovale */
 }
 
 .mole {
@@ -73,4 +68,58 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    body {
+        min-height: 100vh;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-size: 1.4em;
+        margin: 5px 0 8px 0;
+    }
+
+    .scoreboard {
+        flex-direction: row;
+        gap: 2px;
+        margin-bottom: 8px;
+        font-size: 0.9em;
+    }
+
+    .scoreboard p {
+        margin: 1px 0;
+        font-size: 0.9em;
+    }
+
+    /* Utilizza tutto lo spazio disponibile su mobile */
+    .face {
+        width: 100vw;
+        max-width: 400px;
+        height: calc(100vh - 200px);
+        max-height: 500px;
+        min-height: 250px;
+        margin: 8px auto;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 0.95em;
+        margin-top: 8px;
+    }
+
+    #game-over-message h2 {
+        font-size: 1.3em;
+        margin: 8px 0;
+    }
+
+    #game-over-message p {
+        font-size: 0.95em;
+        margin: 6px 0;
+    }
 }

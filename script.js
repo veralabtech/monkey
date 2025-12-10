@@ -8,43 +8,170 @@ const DIFFICULTY_INCREASE_INTERVAL = 5; // Aumenta difficoltà ogni 5 secondi
 // ========================================
 // EXCLUSION ZONES - Aree dove i brufoli NON possono apparire
 // ========================================
-// ISTRUZIONI PER REGOLARE LE COORDINATE:
-// - Ogni zona è definita da: left, top, width, height
-// - Tutti i valori sono PERCENTUALI (0-100) della dimensione del contenitore
-// - left: distanza dal bordo sinistro (0 = estrema sinistra, 100 = estrema destra)
-// - top: distanza dal bordo superiore (0 = in alto, 100 = in basso)
-// - width: larghezza della zona (in percentuale della larghezza totale)
-// - height: altezza della zona (in percentuale dell'altezza totale)
-//
-// Per regolare, osserva dove appaiono i brufoli e modifica questi valori:
-// - Aumenta left per spostare la zona verso destra
-// - Aumenta top per spostare la zona verso il basso
-// - Aumenta width/height per ingrandire la zona
+// 📋 COPIA QUI I VALORI CHE HAI REGOLATO IN debugShowZones() (STEP 3)
 // ========================================
 
 const EXCLUSION_ZONES = [
-    // Occhio sinistro
+    // Occhio sinistro - COPIA i valori da leftEye in debugShowZones()
     {
-        left: 15,    // Regola questo valore per spostare orizzontalmente
-        top: 25,     // Regola questo valore per spostare verticalmente
-        width: 27,   // Regola questo valore per la larghezza
-        height: 18   // Regola questo valore per l'altezza
+        left: 15,    // ← da leftEye.left
+        top: 40,     // ← da leftEye.top
+        width: 27,   // ← da leftEye.width
+        height: 18   // ← da leftEye.height
     },
-    // Occhio destro
+    // Occhio destro - COPIA i valori da rightEye in debugShowZones()
     {
-        left: 55,    // Regola questo valore per spostare orizzontalmente
-        top: 25,     // Regola questo valore per spostare verticalmente
-        width: 28,   // Regola questo valore per la larghezza
-        height: 18   // Regola questo valore per l'altezza
+        left: 58,    // ← da rightEye.left
+        top: 40,     // ← da rightEye.top
+        width: 28,   // ← da rightEye.width
+        height: 18   // ← da rightEye.height
     },
-    // Bocca
+    // Bocca - COPIA i valori da mouth in debugShowZones()
     {
-        left: 35,    // Regola questo valore per spostare orizzontalmente
-        top: 65,     // Regola questo valore per spostare verticalmente
-        width: 30,   // Regola questo valore per la larghezza
-        height: 15   // Regola questo valore per l'altezza
+        left: 35,    // ← da mouth.left
+        top: 70,     // ← da mouth.top
+        width: 30,   // ← da mouth.width
+        height: 15   // ← da mouth.height
     }
 ];
+
+// ========================================
+// DEBUG: VISUALIZZAZIONE ZONE
+// ========================================
+// Per abilitare la visualizzazione delle zone, chiama debugShowZones() dopo startGame()
+// Per disabilitare, commenta la chiamata a debugShowZones() e ricarica la pagina
+// ========================================
+
+/**
+ * Mostra visivamente le zone di spawn e le zone di esclusione.
+ * QUESTA FUNZIONE È SOLO PER DEBUG - RIMUOVERE IN PRODUZIONE
+ */
+function debugShowZones() {
+    // Rimuovi eventuali zone di debug esistenti
+    document.querySelectorAll('.debug-zone').forEach(el => el.remove());
+
+    const containerWidth = gameBoard.offsetWidth;
+    const containerHeight = gameBoard.offsetHeight;
+
+    // ========================================
+    // 📐 STEP 1: REGOLA QUESTI VALORI QUI PER VEDERE L'AREA DI SPAWN
+    // ========================================
+    const safetyMarginX = 52;  // ← MODIFICA QUESTO per vedere l'area più stretta orizzontalmente
+    const safetyMarginY = 62;  // ← MODIFICA QUESTO per vedere l'area più stretta verticalmente
+
+    const offsetY = 30;  // ← MODIFICA QUESTO per spostare l'area in alto/basso (+ = giù, - = su)
+
+    // ========================================
+    // 📋 STEP 2: QUANDO L'AREA TI PIACE, COPIA I VALORI SOPRA
+    //            ALLA FUNZIONE isInsideOval() (righe 222-224)
+    //            Esempio: se qui hai safetyMarginX = 30,
+    //            scrivi radiusX = (containerWidth / 2) - 30
+    // ========================================
+
+    // Calcola i raggi dell'ellisse ridotta
+    const radiusX = (containerWidth / 2) - safetyMarginX;
+    const radiusY = (containerHeight / 2) - safetyMarginY;
+    const centerX = containerWidth / 2;
+    const centerY = (containerHeight / 2) + offsetY;  // Centro spostato verticalmente
+
+    // Calcola posizione e dimensione del rettangolo contenitore dell'ellisse
+    const ovalLeft = centerX - radiusX;
+    const ovalTop = centerY - radiusY;
+    const ovalWidth = radiusX * 2;
+    const ovalHeight = radiusY * 2;
+
+    // Mostra l'area ellittica di spawn con i margini applicati
+    const spawnArea = document.createElement('div');
+    spawnArea.className = 'debug-zone';
+    spawnArea.style.cssText = `
+        position: absolute;
+        left: ${ovalLeft}px;
+        top: ${ovalTop}px;
+        width: ${ovalWidth}px;
+        height: ${ovalHeight}px;
+        border: 3px solid lime;
+        background-color: rgba(0, 255, 0, 0.1);
+        pointer-events: none;
+        z-index: 1000;
+        border-radius: 50%;
+    `;
+    gameBoard.appendChild(spawnArea);
+
+    // ========================================
+    // 👁️ STEP 3: REGOLA LE ZONE DI ESCLUSIONE (OCCHI E BOCCA)
+    // ========================================
+    // Ogni zona ha 4 valori (tutti in PERCENTUALE 0-100):
+    // - left: distanza dal bordo sinistro
+    // - top: distanza dall'alto
+    // - width: larghezza
+    // - height: altezza
+
+    // OCCHIO SINISTRO
+    const leftEye = {
+        left: 15,    // ← REGOLA posizione orizzontale
+        top: 40,     // ← REGOLA posizione verticale
+        width: 27,   // ← REGOLA larghezza
+        height: 18   // ← REGOLA altezza
+    };
+
+    // OCCHIO DESTRO
+    const rightEye = {
+        left: 58,    // ← REGOLA posizione orizzontale
+        top: 40,     // ← REGOLA posizione verticale
+        width: 28,   // ← REGOLA larghezza
+        height: 18   // ← REGOLA altezza
+    };
+
+    // BOCCA
+    const mouth = {
+        left: 35,    // ← REGOLA posizione orizzontale
+        top: 70,     // ← REGOLA posizione verticale
+        width: 30,   // ← REGOLA larghezza
+        height: 15   // ← REGOLA altezza
+    };
+
+    // ========================================
+    // 📋 STEP 4: COPIA I VALORI FINALI ALL'ARRAY EXCLUSION_ZONES (righe 25-47)
+    //            Sostituisci i valori nell'array con quelli che hai regolato qui sopra
+    // ========================================
+
+    // Mostra le zone
+    const zones = [
+        { zone: leftEye, label: 'Occhio SX' },
+        { zone: rightEye, label: 'Occhio DX' },
+        { zone: mouth, label: 'Bocca' }
+    ];
+
+    zones.forEach(({ zone, label }) => {
+        const exclusionDiv = document.createElement('div');
+        exclusionDiv.className = 'debug-zone';
+
+        const zoneLeft = (zone.left / 100) * containerWidth;
+        const zoneTop = (zone.top / 100) * containerHeight;
+        const zoneWidth = (zone.width / 100) * containerWidth;
+        const zoneHeight = (zone.height / 100) * containerHeight;
+
+        exclusionDiv.style.cssText = `
+            position: absolute;
+            left: ${zoneLeft}px;
+            top: ${zoneTop}px;
+            width: ${zoneWidth}px;
+            height: ${zoneHeight}px;
+            border: 2px solid red;
+            background-color: rgba(255, 0, 0, 0.2);
+            pointer-events: none;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: red;
+            font-weight: bold;
+            font-size: 12px;
+        `;
+        exclusionDiv.textContent = label;
+        gameBoard.appendChild(exclusionDiv);
+    });
+}
 
 // Riferimenti agli Elementi DOM
 const scoreDisplay = document.getElementById('score');
@@ -109,6 +236,40 @@ function isInExclusionZone(x, y, containerWidth, containerHeight, moleSize) {
 }
 
 /**
+ * Verifica se una posizione si trova all'interno dell'ovale della faccia.
+ * Usa la formula matematica dell'ellisse per verificare i confini.
+ * @param {number} x - Coordinata X in pixel.
+ * @param {number} y - Coordinata Y in pixel.
+ * @param {number} containerWidth - Larghezza del contenitore in pixel.
+ * @param {number} containerHeight - Altezza del contenitore in pixel.
+ * @param {number} moleSize - Dimensione del brufolo in pixel.
+ * @returns {boolean} True se la posizione è dentro l'ovale.
+ */
+function isInsideOval(x, y, containerWidth, containerHeight, moleSize) {
+    // Centro dell'ellisse
+    const centerX = containerWidth / 2;
+
+    // ⚙️ REGOLA QUESTI VALORI PER RIDURRE/AUMENTARE/SPOSTARE L'AREA DI SPAWN ⚙️
+    const radiusX = (containerWidth / 2) - 60;   // ← AUMENTA questo numero per ridurre l'area orizzontalmente
+    const radiusY = (containerHeight / 2) - 70;  // ← AUMENTA questo numero per ridurre l'area verticalmente
+    const offsetY = 32;  // ← MODIFICA questo per spostare l'area verticalmente (+ = giù, - = su)
+    // Esempio: cambiare 5 in 30 renderà l'area più piccola
+    //          cambiare offsetY da 0 a 20 sposterà l'area di 20px verso il basso
+
+    const centerY = (containerHeight / 2) + offsetY;  // Centro con offset verticale
+
+    // Centro del brufolo (considerando la sua dimensione)
+    const moleCenterX = x + (moleSize / 2);
+    const moleCenterY = y + (moleSize / 2);
+
+    // Formula dell'ellisse: ((x-h)²/a²) + ((y-k)²/b²) <= 1
+    const normalizedX = (moleCenterX - centerX) / radiusX;
+    const normalizedY = (moleCenterY - centerY) / radiusY;
+
+    return (normalizedX * normalizedX + normalizedY * normalizedY) <= 1;
+}
+
+/**
  * Crea e posiziona casualmente un brufolo sulla faccia.
  */
 function createMole() {
@@ -116,32 +277,27 @@ function createMole() {
     const mole = document.createElement('div');
     mole.classList.add('mole');
 
-    // Margini per tenere i brufoli all'interno della faccia ovale
-    // La faccia ovale non riempie tutto il div 300x400
-    const marginLeft = 50;   // Margine sinistro
-    const marginRight = 50;  // Margine destro
-    const marginTop = 40;    // Margine superiore
-    const marginBottom = 40; // Margine inferiore
-    const moleSize = 30;     // Dimensione del brufolo
+    const moleSize = 30; // Dimensione del brufolo
+    const containerWidth = gameBoard.offsetWidth;
+    const containerHeight = gameBoard.offsetHeight;
 
-    // Calcola l'area disponibile per i brufoli
-    const availableWidth = gameBoard.offsetWidth - marginLeft - marginRight - moleSize;
-    const availableHeight = gameBoard.offsetHeight - marginTop - marginBottom - moleSize;
-
-    // Trova una posizione valida che non sia in una zona di esclusione
+    // Trova una posizione valida che sia dentro l'ovale e non in una zona di esclusione
     let x, y;
     let attempts = 0;
-    const maxAttempts = 50; // Previeni loop infinito
+    const maxAttempts = 100; // Aumentato per maggiore sicurezza
 
     do {
-        // Genera posizione casuale
-        x = getRandomInt(marginLeft, marginLeft + availableWidth);
-        y = getRandomInt(marginTop, marginTop + availableHeight);
+        // Genera posizione casuale in tutto il contenitore
+        x = getRandomInt(0, containerWidth - moleSize);
+        y = getRandomInt(0, containerHeight - moleSize);
         attempts++;
 
-        // Esci se trovata posizione valida o raggiunti i tentativi massimi
-        if (!isInExclusionZone(x, y, gameBoard.offsetWidth, gameBoard.offsetHeight, moleSize)) {
-            break;
+        // Verifica che sia dentro l'ovale E non in una zona di esclusione
+        const insideOval = isInsideOval(x, y, containerWidth, containerHeight, moleSize);
+        const inExclusionZone = isInExclusionZone(x, y, containerWidth, containerHeight, moleSize);
+
+        if (insideOval && !inExclusionZone) {
+            break; // Posizione valida trovata!
         }
     } while (attempts < maxAttempts);
 
@@ -254,6 +410,11 @@ function startGame() {
             endGame();
         }
     }, 1000); // Aggiorna ogni secondo
+
+    // ========================================
+    // DEBUG: Rimuovi o commenta questa riga per nascondere le zone
+    // debugShowZones();
+    // ========================================
 }
 
 
