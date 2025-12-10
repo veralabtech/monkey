@@ -25,7 +25,7 @@ body {
     width: 350px;
     height: 450px;
     background-image: url('./public/assets/face2.png');
-    background-size: cover;
+    background-size: 90%;
     background-position: center;
     background-repeat: no-repeat;
     margin: 20px auto;

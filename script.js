@@ -31,7 +31,7 @@ const EXCLUSION_ZONES = [
         left: 35,    // ← da mouth.left
         top: 70,     // ← da mouth.top
         width: 30,   // ← da mouth.width
-        height: 15   // ← da mouth.height
+        height: 12   // ← da mouth.height
     }
 ];
 
@@ -56,8 +56,8 @@ function debugShowZones() {
     // ========================================
     // 📐 STEP 1: REGOLA QUESTI VALORI QUI PER VEDERE L'AREA DI SPAWN
     // ========================================
-    const safetyMarginX = 52;  // ← MODIFICA QUESTO per vedere l'area più stretta orizzontalmente
-    const safetyMarginY = 62;  // ← MODIFICA QUESTO per vedere l'area più stretta verticalmente
+    const safetyMarginX = 80;  // ← MODIFICA QUESTO per vedere l'area più stretta orizzontalmente
+    const safetyMarginY = 90;  // ← MODIFICA QUESTO per vedere l'area più stretta verticalmente
 
     const offsetY = 30;  // ← MODIFICA QUESTO per spostare l'area in alto/basso (+ = giù, - = su)
 
@@ -127,7 +127,7 @@ function debugShowZones() {
         left: 35,    // ← REGOLA posizione orizzontale
         top: 70,     // ← REGOLA posizione verticale
         width: 30,   // ← REGOLA larghezza
-        height: 15   // ← REGOLA altezza
+        height: 12   // ← REGOLA altezza
     };
 
     // ========================================
@@ -250,8 +250,8 @@ function isInsideOval(x, y, containerWidth, containerHeight, moleSize) {
     const centerX = containerWidth / 2;
 
     // ⚙️ REGOLA QUESTI VALORI PER RIDURRE/AUMENTARE/SPOSTARE L'AREA DI SPAWN ⚙️
-    const radiusX = (containerWidth / 2) - 60;   // ← AUMENTA questo numero per ridurre l'area orizzontalmente
-    const radiusY = (containerHeight / 2) - 70;  // ← AUMENTA questo numero per ridurre l'area verticalmente
+    const radiusX = (containerWidth / 2) - 80;   // ← AUMENTA questo numero per ridurre l'area orizzontalmente
+    const radiusY = (containerHeight / 2) - 90;  // ← AUMENTA questo numero per ridurre l'area verticalmente
     const offsetY = 32;  // ← MODIFICA questo per spostare l'area verticalmente (+ = giù, - = su)
     // Esempio: cambiare 5 in 30 renderà l'area più piccola
     //          cambiare offsetY da 0 a 20 sposterà l'area di 20px verso il basso
