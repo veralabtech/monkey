@@ -14,24 +14,24 @@ const DIFFICULTY_INCREASE_INTERVAL = 5; // Aumenta difficoltà ogni 5 secondi
 const EXCLUSION_ZONES = [
     // Occhio sinistro - COPIA i valori da leftEye in debugShowZones()
     {
-        left: 15,    // ← da leftEye.left
-        top: 40,     // ← da leftEye.top
-        width: 27,   // ← da leftEye.width
-        height: 18   // ← da leftEye.height
+        left: 16,    // ← REGOLA posizione orizzontale
+        top: 38,     // ← REGOLA posizione verticale
+        width: 28,   // ← REGOLA larghezza
+        height: 21   // ← REGOLA altezza
     },
     // Occhio destro - COPIA i valori da rightEye in debugShowZones()
     {
-        left: 58,    // ← da rightEye.left
-        top: 40,     // ← da rightEye.top
+        left: 56,    // ← da rightEye.left
+        top: 38,     // ← da rightEye.top
         width: 28,   // ← da rightEye.width
-        height: 18   // ← da rightEye.height
+        height: 21   // ← da rightEye.height
     },
     // Bocca - COPIA i valori da mouth in debugShowZones()
     {
         left: 35,    // ← da mouth.left
-        top: 70,     // ← da mouth.top
+        top: 67,     // ← da mouth.top
         width: 30,   // ← da mouth.width
-        height: 12   // ← da mouth.height
+        height: 15   // ← da mouth.height
     }
 ];
 
