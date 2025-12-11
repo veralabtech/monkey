@@ -123,3 +123,7 @@ button {
         margin: 6px 0;
     }
 }
+
+#share-button {
+    margin-top: 10px;
+}

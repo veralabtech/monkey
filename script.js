@@ -180,6 +180,7 @@ const timerDisplay = document.getElementById('timer');
 const gameBoard = document.getElementById('game-board');
 const startButton = document.getElementById('start-button');
 const restartButton = document.getElementById('restart-button');
+const shareButton = document.getElementById('share-button');
 const gameOverMessage = document.getElementById('game-over-message');
 const finalScoreDisplay = document.getElementById('final-score');
 
@@ -360,6 +361,7 @@ function endGame() {
     // 4. Nascondi il pulsante di avvio se visibile, ma mostra il pulsante di riavvio
     startButton.classList.add('hidden');
     restartButton.classList.remove('hidden');
+    shareButton.classList.remove('hidden');
 
     // Opzionale: Rimuovi gli handler per evitare doppi click se il gioco non è resettato correttamente
     moleInterval = null;
@@ -417,7 +419,23 @@ function startGame() {
     // ========================================
 }
 
+async function shareScore(score) {
+    const text = `I scored ${score} points! 🎮`;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'My Score',
+                text: text,
+                url: window.location.href
+            });
+        } catch (err) {
+            console.log('Share cancelled');
+        }
+    }
+}
 
 // Event Listeners per i pulsanti
 startButton.addEventListener('click', startGame);
 restartButton.addEventListener('click', startGame);
+shareButton.addEventListener('click', () => shareScore(score));
