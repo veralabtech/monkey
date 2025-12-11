@@ -10,7 +10,7 @@
 
 <body>
     <div class="game-container">
-        <h1>Schiaccia il Brufolo!</h1>
+        <h1 id="title">Schiaccia il Brufolo!</h1>
         <div class="scoreboard">
             <p>Punti: <span id="score">0</span></p>
             <p>Brufoli Schiacciati: <span id="pimples-count">0</span></p>
@@ -21,6 +21,22 @@
         </div>
 
         <button id="start-button">INIZIA IL GIOCO</button>
+        <button id="help-button">Aiuto</button>
+
+        <!-- Tooltip Aiuto -->
+        <div id="help-tooltip" class="hidden">
+            <div class="tooltip-content">
+                <h3>Come Giocare</h3>
+                <p><strong>Obiettivo:</strong> schiaccia più brufoli possibili entro il tempo limite.</p>
+                <p><strong>Comandi:</strong></p>
+                <ul>
+                    <li><strong>Mobile:</strong> tocca con le dita i brufoli per schiacciarli.</li>
+                    <li><strong>Desktop:</strong> usa il mouse e clicca col pulsante sinistro sui brufoli.</li>
+                </ul>
+                <button id="close-tooltip" class="close-btn">Chiudi</button>
+            </div>
+        </div>
+
         <div id="game-over-message" class="hidden">
             <h2>Tempo Scaduto!</h2>
             <p>Il tuo punteggio finale è: <span id="final-score">0</span></p>

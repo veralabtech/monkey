@@ -359,6 +359,7 @@ function endGame() {
 
     // 4. Nascondi il pulsante di avvio se visibile, ma mostra il pulsante di riavvio
     startButton.classList.add('hidden');
+    helpButton.classList.add('hidden');
     restartButton.classList.remove('hidden');
 
     // Opzionale: Rimuovi gli handler per evitare doppi click se il gioco non è resettato correttamente
@@ -382,6 +383,7 @@ function startGame() {
     // 2. Nascondi i messaggi e mostra la plancia
     gameOverMessage.classList.add('hidden');
     startButton.classList.add('hidden');
+    helpButton.classList.add('hidden');
 
     // 3. Resetta la velocità di spawn
     currentSpawnRate = INITIAL_SPAWN_RATE;
@@ -417,6 +419,41 @@ function startGame() {
     // ========================================
 }
 
+
 // Event Listeners per i pulsanti
 startButton.addEventListener('click', startGame);
 restartButton.addEventListener('click', startGame);
+
+// ========================================
+// TOOLTIP AIUTO
+// ========================================
+const helpButton = document.getElementById('help-button');
+const helpTooltip = document.getElementById('help-tooltip');
+const closeTooltipBtn = document.getElementById('close-tooltip');
+
+/**
+ * Apre il tooltip di aiuto con auto-chiusura dopo 10 secondi
+ */
+function openHelpTooltip() {
+    helpTooltip.classList.remove('hidden');
+}
+
+/**
+ * Chiude il tooltip di aiuto
+ */
+function closeHelpTooltip() {
+    helpTooltip.classList.add('hidden');
+}
+
+// Event listener per aprire il tooltip
+helpButton.addEventListener('click', openHelpTooltip);
+
+// Event listener per il bottone chiudi
+closeTooltipBtn.addEventListener('click', closeHelpTooltip);
+
+// Chiudi tooltip se si clicca fuori dalla tooltip-content
+helpTooltip.addEventListener('click', (event) => {
+    if (event.target === helpTooltip) {
+        closeHelpTooltip();
+    }
+});

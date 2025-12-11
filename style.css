@@ -9,6 +9,11 @@ body {
     text-align: center;
 }
 
+#title {
+    font-weight: bold;
+    color: #D90092;
+}
+
 .scoreboard {
     display: flex;
     flex-direction: column;
@@ -56,7 +61,12 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+/* Assicura che il tooltip nascosto sia invisibile */
+#help-tooltip.hidden {
+    display: none !important;
 }
 
 button {
@@ -64,9 +74,9 @@ button {
     font-size: 1em;
     cursor: pointer;
     margin-top: 10px;
-    background-color: #4CAF50;
+    background-color: #D90092;
+    border: 1px solid #D90092;
     color: white;
-    border: none;
     border-radius: 5px;
 }
 
@@ -121,5 +131,109 @@ button {
     #game-over-message p {
         font-size: 0.95em;
         margin: 6px 0;
+    }
+}
+
+#help-button {
+    background-color: #FFF5FC;
+    border: 1px solid #D90092;
+    color: black;
+}
+
+/* Tooltip Aiuto */
+#help-tooltip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.tooltip-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+}
+
+.tooltip-content h3 {
+    margin: 0 0 15px 0;
+    color: #D90092;
+    font-size: 1.5em;
+}
+
+.tooltip-content p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.tooltip-content ul {
+    margin: 10px 0;
+    padding-left: 20px;
+    list-style-type: none;
+}
+
+.tooltip-content ul li {
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.tooltip-content ul li::before {
+    content: "• ";
+    color: #D90092;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.close-btn {
+    background-color: #D90092;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.close-btn:hover {
+    background-color: #b0007a;
+}
+
+/* Mobile responsive per tooltip */
+@media (max-width: 768px) {
+    #help-tooltip {
+        padding: 4px;
+    }
+
+    .tooltip-content {
+        padding: 15px;
+        max-width: 80%;
+    }
+
+    .tooltip-content h3 {
+        font-size: 1.3em;
+        margin-bottom: 12px;
+    }
+
+    .tooltip-content p,
+    .tooltip-content ul li {
+        font-size: 0.95em;
+    }
+
+    .close-btn {
+        padding: 12px 20px;
+        font-size: 1em;
     }
 }
