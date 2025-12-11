@@ -180,7 +180,6 @@ const timerDisplay = document.getElementById('timer');
 const gameBoard = document.getElementById('game-board');
 const startButton = document.getElementById('start-button');
 const restartButton = document.getElementById('restart-button');
-const shareButton = document.getElementById('share-button');
 const gameOverMessage = document.getElementById('game-over-message');
 const finalScoreDisplay = document.getElementById('final-score');
 
@@ -361,7 +360,6 @@ function endGame() {
     // 4. Nascondi il pulsante di avvio se visibile, ma mostra il pulsante di riavvio
     startButton.classList.add('hidden');
     restartButton.classList.remove('hidden');
-    shareButton.classList.remove('hidden');
 
     // Opzionale: Rimuovi gli handler per evitare doppi click se il gioco non è resettato correttamente
     moleInterval = null;
@@ -419,77 +417,6 @@ function startGame() {
     // ========================================
 }
 
-function generateScoreImage(score) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1080;
-    canvas.height = 1920;
-
-    const ctx = canvas.getContext('2d');
-
-    // Gradient background
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, '#667eea');
-    gradient.addColorStop(1, '#764ba2');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw centered score
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 200px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(score, canvas.width / 2, canvas.height / 2 - 150);
-
-    // Draw label
-    ctx.font = 'bold 60px Arial';
-    ctx.fillText('POINTS', canvas.width / 2, canvas.height / 2 + 100);
-
-    // Draw message
-    ctx.font = '50px Arial';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.fillText('Check my score! 🎮', canvas.width / 2, canvas.height - 200);
-
-    return canvas;
-}
-
-function showFeedback(message, type = 'success') {
-    const feedback = document.getElementById('feedback');
-    feedback.textContent = message;
-    feedback.classList.remove('hidden');
-    feedback.classList.add(type);
-    setTimeout(() => feedback.classList.add('hidden'), 3000);
-}
-
-function shareToInstagramStories(score) {
-    // Check if on mobile
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (!isMobile) {
-        showFeedback('This feature works on mobile only. You can preview the image above.', 'error');
-        return;
-    }
-
-    const canvas = generateScoreImage(score);
-
-    canvas.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-
-        // Try to open Instagram Stories
-        // Using backgroundImage parameter to share as background
-        const instagramUrl = `instagram-stories://share?backgroundImage=${encodeURIComponent(url)}`;
-
-        // Set a timeout to fall back if Instagram isn't installed
-        const timeout = setTimeout(() => {
-            showFeedback('Instagram app not found. Please install it first.', 'error');
-        }, 500);
-
-        window.location.href = instagramUrl;
-        clearTimeout(timeout);
-    }, 'image/png');
-}
-
-
 // Event Listeners per i pulsanti
 startButton.addEventListener('click', startGame);
 restartButton.addEventListener('click', startGame);
-shareButton.addEventListener('click', () => shareToInstagramStories(score));
