@@ -108,26 +108,26 @@ function debugShowZones() {
 
     // OCCHIO SINISTRO
     const leftEye = {
-        left: 15,    // ← REGOLA posizione orizzontale
-        top: 40,     // ← REGOLA posizione verticale
-        width: 27,   // ← REGOLA larghezza
-        height: 18   // ← REGOLA altezza
+        left: 16,    // ← REGOLA posizione orizzontale
+        top: 38,     // ← REGOLA posizione verticale
+        width: 28,   // ← REGOLA larghezza
+        height: 21   // ← REGOLA altezza
     };
 
     // OCCHIO DESTRO
     const rightEye = {
-        left: 58,    // ← REGOLA posizione orizzontale
-        top: 40,     // ← REGOLA posizione verticale
+        left: 56,    // ← REGOLA posizione orizzontale
+        top: 38,     // ← REGOLA posizione verticale
         width: 28,   // ← REGOLA larghezza
-        height: 18   // ← REGOLA altezza
+        height: 21   // ← REGOLA altezza
     };
 
     // BOCCA
     const mouth = {
         left: 35,    // ← REGOLA posizione orizzontale
-        top: 70,     // ← REGOLA posizione verticale
+        top: 67,     // ← REGOLA posizione verticale
         width: 30,   // ← REGOLA larghezza
-        height: 12   // ← REGOLA altezza
+        height: 15   // ← REGOLA altezza
     };
 
     // ========================================
